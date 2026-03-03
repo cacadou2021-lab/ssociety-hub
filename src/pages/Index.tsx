@@ -13,6 +13,7 @@ import MobileSidebar from '@/components/hub/MobileSidebar';
 import DownloadSection from '@/components/hub/DownloadSection';
 import WildBotSection from '@/components/hub/WildBotSection';
 import WhatsAllSection from '@/components/hub/WhatsAllSection';
+import InstantMenuSection from '@/components/hub/InstantMenuSection';
 import WhatsAppCTA from '@/components/hub/WhatsAppCTA';
 import { Project } from '@/types/project';
 import { useLanguage } from '@/context/LanguageContext';
@@ -113,6 +114,7 @@ export default function PortfolioPage() {
       </div>
 
       <WhatsAllSection />
+      <InstantMenuSection />
       <WildBotSection />
       <DownloadSection />
       <FilterBar activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
