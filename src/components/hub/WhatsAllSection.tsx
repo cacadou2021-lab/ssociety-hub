@@ -1,7 +1,8 @@
-import { motion } from 'framer-motion';
-import { Clock, ShieldCheck, Send, BarChart3, Brain, Search, Ban, Save, ArrowRight, MessageSquare } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
+import { useState } from 'react';
 
 const features = [
   { icon: '📋', title: 'Citește lista de contacte', desc: 'Import automat din CSV cu nume, telefon, oraș și mesaj personalizat.' },
@@ -28,6 +29,8 @@ const schedule = [
 ];
 
 export default function WhatsAllSection() {
+  const [showGuide, setShowGuide] = useState(false);
+
   return (
     <section className="max-w-7xl mx-auto px-4 py-8 md:py-20">
       <div className="relative bg-[#0a0f0d] border border-[#25D366]/15 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-16 overflow-hidden shadow-2xl">
@@ -156,6 +159,203 @@ export default function WhatsAllSection() {
               </div>
             ))}
           </div>
+
+          {/* Quick Start Guide Toggle */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-10"
+          >
+            <button
+              onClick={() => setShowGuide(!showGuide)}
+              className="w-full flex items-center justify-between gap-3 px-5 py-4 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-2xl hover:border-cyan-500/40 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🚀</span>
+                <div className="text-left">
+                  <strong className="block text-sm text-white font-semibold">Quick Start Guide — MrDelivery Outreach</strong>
+                  <span className="text-xs text-[#9ca3af]">v10 Perfect Edition + Dashboard • Click pentru documentație completă</span>
+                </div>
+              </div>
+              {showGuide ? <ChevronUp size={20} className="text-cyan-400" /> : <ChevronDown size={20} className="text-cyan-400 group-hover:translate-y-0.5 transition-transform" />}
+            </button>
+
+            <AnimatePresence>
+              {showGuide && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-4 space-y-6 bg-[#0a0e1a]/80 border border-[#374151]/50 rounded-2xl p-5 md:p-8">
+
+                    {/* Ce primești */}
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">✨ Ce primești</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {[
+                          { icon: '🤖', title: 'Bot Automat WhatsApp', desc: 'Trimitere automată mesaje cu toate protecțiile anti-ban' },
+                          { icon: '📊', title: 'Dashboard Live', desc: 'Monitorizare în timp real cu design futuristic' },
+                          { icon: '🛡️', title: 'Anti-Ban Protection', desc: 'OCR duplicate check, delay-uri, pauze umane' },
+                          { icon: '📈', title: 'Statistici Complete', desc: 'Timeline, rate succes, ETA, și multe altele' },
+                        ].map((f, i) => (
+                          <div key={i} className="flex items-start gap-3 p-3 bg-white/[0.03] border border-white/[0.06] rounded-xl">
+                            <span className="text-2xl">{f.icon}</span>
+                            <div>
+                              <strong className="block text-sm text-cyan-300">{f.title}</strong>
+                              <span className="text-xs text-[#9ca3af]">{f.desc}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Instalare */}
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">📦 Instalare (Prima Rulare)</h3>
+                      <div className="space-y-3">
+                        {[
+                          { step: 1, title: 'Instalează Python 3.8+', desc: 'Descarcă de pe python.org. ⚠️ Bifează "Add Python to PATH"!' },
+                          { step: 2, title: 'Instalează Tesseract OCR', desc: 'Windows: instalează în C:\\Program Files\\Tesseract-OCR' },
+                          { step: 3, title: 'Instalează dependențele Python', desc: 'Rulează: pip install -r requirements.txt SAU start.bat → opțiunea [4]' },
+                          { step: 4, title: 'Pregătește fișierul startbot.csv', desc: 'Format: Nume,Telefon,Oras — salvat ca UTF-8 (nu UTF-8 BOM), deschis cu Notepad (nu Excel)' },
+                        ].map((s) => (
+                          <div key={s.step} className="flex items-start gap-3 p-3 bg-white/[0.02] border-l-2 border-cyan-500/50 rounded-r-lg hover:border-purple-500/50 hover:bg-white/[0.04] transition-all">
+                            <span className="w-7 h-7 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">{s.step}</span>
+                            <div>
+                              <strong className="block text-sm text-white">{s.title}</strong>
+                              <span className="text-xs text-[#9ca3af]">{s.desc}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-3 p-3 bg-white/[0.02] border border-white/[0.06] rounded-xl font-mono text-xs text-emerald-400">
+                        Nume,Telefon,Oras<br />
+                        Restaurant La Maria,+40712345678,București<br />
+                        Pizzeria Antonio,+40723456789,Cluj-Napoca
+                      </div>
+                    </div>
+
+                    {/* Pornire */}
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">🚀 Pornire (Zilnică)</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="p-3 bg-white/[0.02] border border-white/[0.06] rounded-xl">
+                          <strong className="block text-sm text-purple-400 mb-1">Metoda 1: start.bat (Recomandat)</strong>
+                          <span className="text-xs text-[#9ca3af]">Dublu-click pe start.bat → Alege [2] Bot + Dashboard → Se deschid 2 ferestre automat</span>
+                        </div>
+                        <div className="p-3 bg-white/[0.02] border border-white/[0.06] rounded-xl">
+                          <strong className="block text-sm text-purple-400 mb-1">Metoda 2: Manual</strong>
+                          <span className="text-xs text-[#9ca3af]">Terminal 1: python dashboard_server.py → Terminal 2: python mrdelivery_outreach_v10_PERFECT.py → Browser: localhost:5000</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Checklist */}
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">✅ Checklist ÎNAINTE de Start</h3>
+                      <div className="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
+                        <ul className="space-y-1.5 text-xs text-[#c4dcc8]">
+                          {[
+                            'WhatsApp Desktop instalat și deschis',
+                            'Ești logat în WhatsApp (scan QR code)',
+                            'WhatsApp e fereastra ACTIVĂ (nu minimizat)',
+                            'Power Settings → Never Sleep',
+                            'startbot.csv salvat ca UTF-8',
+                            'Mesajul pregătit în clipboard',
+                            'Nu vei atinge mouse/tastatura în timpul rulării',
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                              <span className="text-emerald-400">✅</span> {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Setări */}
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">⚙️ Setări Importante</h3>
+                      <div className="p-4 bg-white/[0.02] border border-white/[0.06] rounded-xl font-mono text-xs space-y-1">
+                        <div><span className="text-cyan-400">Ore de lucru:</span> <span className="text-[#c4dcc8]">09:00 - 20:00</span></div>
+                        <div><span className="text-cyan-400">Pauză prânz:</span> <span className="text-[#c4dcc8]">12:00 - 14:00</span></div>
+                        <div><span className="text-cyan-400">Delay mesaje:</span> <span className="text-[#c4dcc8]">90-240 secunde (1.5-4 minute)</span></div>
+                        <div><span className="text-cyan-400">Pauze umane:</span> <span className="text-[#c4dcc8]">20% șansă, 2-8 minute</span></div>
+                        <div><span className="text-cyan-400">Countdown:</span> <span className="text-[#c4dcc8]">10 secunde + BEEP</span></div>
+                        <div><span className="text-cyan-400">Anti-ban:</span> <span className="text-[#c4dcc8]">3 erori → pauză 20 minute</span></div>
+                      </div>
+                    </div>
+
+                    {/* Siguranță */}
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">🛡️ Siguranță & Best Practices</h3>
+                      <div className="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
+                        <ul className="space-y-1.5 text-xs text-[#c4dcc8]">
+                          {[
+                            'Nu trimite peste 50-60 mesaje/oră',
+                            'Respectă pauzele de prânz (12:00-14:00)',
+                            'Oprește bot-ul peste noapte',
+                            'Monitorizează dashboard-ul constant',
+                            'La 2+ erori consecutive → verifică manual',
+                            'Variază textul mesajelor periodic',
+                            'Nu folosi aceeași listă zilnic',
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                              <span className="text-emerald-400">✅</span> {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Troubleshooting */}
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">🔧 Probleme Comune</h3>
+                      <div className="space-y-3">
+                        {[
+                          { title: 'Dashboard nu se conectează', items: ['Dashboard server rulează?', 'Port 5000 liber?', 'Firewall nu blochează?'] },
+                          { title: 'Bot nu pornește', items: ['WhatsApp Desktop deschis și logat?', 'WhatsApp e fereastra ACTIVĂ?', 'Tesseract instalat corect?'] },
+                          { title: 'Erori UTF-8', items: ['Deschide CSV în Notepad (nu Excel)', 'Save As → Encoding: UTF-8 (nu BOM)', 'Salvează'] },
+                        ].map((problem, i) => (
+                          <div key={i} className="p-3 bg-amber-500/5 border-l-2 border-amber-500/40 rounded-r-lg">
+                            <strong className="block text-sm text-amber-400 mb-1">{problem.title}</strong>
+                            <ul className="text-xs text-[#9ca3af] space-y-0.5">
+                              {problem.items.map((item, j) => (
+                                <li key={j}>• {item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Fișiere & Reset */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <h3 className="text-lg font-bold text-cyan-400 mb-3">📁 Fișiere Generate</h3>
+                        <div className="p-3 bg-white/[0.02] border border-white/[0.06] rounded-xl font-mono text-xs space-y-1 text-[#9ca3af]">
+                          <div><strong className="text-white">outreach_results.csv</strong> — Contacte procesate</div>
+                          <div><strong className="text-white">outreach_log.txt</strong> — Log detaliat</div>
+                          <div><strong className="text-white">outreach_progress.json</strong> — Progres resume</div>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-cyan-400 mb-3">🔄 Reset Complet</h3>
+                        <div className="p-3 bg-white/[0.02] border border-white/[0.06] rounded-xl text-xs text-[#9ca3af]">
+                          <p className="mb-2">Șterge fișierele generate sau folosește:</p>
+                          <code className="text-amber-400">start.bat → opțiunea [5]</code>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
 
           {/* Footer CTA */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[#25D366]/15">
